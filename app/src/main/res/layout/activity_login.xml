@@ -26,7 +26,7 @@
             android:inputType="textPassword"
             android:hint="密码"
             android:drawableLeft="@drawable/ic_password"
-            android:drawablePadding="10dp"/>
+            android:drawablePadding="10dp" />
 
         <Button
             android:id="@+id/login_button"
@@ -37,6 +37,7 @@
 
         <Switch
             android:id="@+id/wifi_switch"
+            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Wifi is OFF"
@@ -45,7 +46,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
-
 
 
 </android.support.constraint.ConstraintLayout>
