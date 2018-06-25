@@ -20,6 +20,7 @@ public class GatewayManager {
 
     private static final String LOGIN_URL = "http://10.3.8.211/";
     private static final String LOGOUT_URL = "http://10.3.8.211/F.htm";
+    public static final String CHECK_LOGIN_URL = "http://www.baidu.com";
 
     private String username;
     private String password;
@@ -96,13 +97,15 @@ public class GatewayManager {
             @Override
             public void run() {
                 try {
-                    Connection.Response response = Jsoup.connect(LOGIN_URL)
+                    Connection.Response response = Jsoup.connect(CHECK_LOGIN_URL)
                             .method(Connection.Method.GET)
                             .execute();
                     if (response.body().contains("上网注销窗")) {
                         mCallback.onCheckLogin(true);
-                    } else {
+                    } else if (response.body().contains("欢迎登录北邮校园网络")) {
                         mCallback.onCheckLogin(false);
+                    } else {
+                        mCallback.onCheckLogin(true);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
