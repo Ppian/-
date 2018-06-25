@@ -1,5 +1,7 @@
 package org.chenyufei.android.buptgateway;
 
+import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -73,7 +75,14 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        new GatewayManager(mUserInfo.getUsername(), mUserInfo.getPassword(), gatewayCallback).checkLogin();
+
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
+        if (wifiManager.isWifiEnabled()) {
+            new GatewayManager(mUserInfo.getUsername(), mUserInfo.getPassword(), gatewayCallback).checkLogin();
+        } else {
+            Toast.makeText(this, "未连接wifi,请先打开wifi", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private GatewayManager.Callback gatewayCallback = new GatewayManager.Callback() {

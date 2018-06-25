@@ -30,11 +30,11 @@ public class WifStateBroadcastReceiver extends BroadcastReceiver {
             Bundle messageBundle = new Bundle();
             String data;
             if (msg == -1) {
-                data = "登录失败，请检查网络";
+                data = "自动登录失败，请检查网络";
             } else if (msg == 15) {
-                data = "登录成功";
+                data = "自动登录成功";
             } else {
-                data = "登录失败，请检查账号密码是否正确";
+                data = "自动登录失败，请检查账号密码是否正确";
             }
             messageBundle.putString("data", data);
             message.setData(messageBundle);
@@ -99,7 +99,11 @@ public class WifStateBroadcastReceiver extends BroadcastReceiver {
             }
         }
 
-        System.out.println(intent.getAction());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         gatewayManager = new GatewayManager(username, password, mCallback);
 
@@ -107,11 +111,6 @@ public class WifStateBroadcastReceiver extends BroadcastReceiver {
         WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 
         if (wifiManager.isWifiEnabled()) {
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             gatewayManager.checkCampusNetwork();
         } else {
             isRunning = false;
