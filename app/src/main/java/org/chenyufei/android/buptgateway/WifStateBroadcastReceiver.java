@@ -8,8 +8,9 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.design.widget.TabLayout;
 import android.widget.Toast;
+
+
 
 
 /**
@@ -17,8 +18,6 @@ import android.widget.Toast;
  */
 
 public class WifStateBroadcastReceiver extends BroadcastReceiver {
-
-    public static final String TAG = "自邮门";
 
     private Context mContext;
     private GatewayManager gatewayManager;

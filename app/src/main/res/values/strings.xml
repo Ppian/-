@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">自邮门</string>
+    <string name="login_shortcut">登录</string>
+    <string name="login_shortcut_disabled">登录快捷键不可用</string>
+    <string name="logout_shortcut">注销</string>
+    <string name="logout_shortcut_disabled">注销快捷键不可用</string>
+
 </resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="shortcut_login"
+        android:enabled="true"
+        android:icon="@mipmap/log_in"
+        android:shortcutShortLabel="@string/login_shortcut"
+        android:shortcutLongLabel="@string/login_shortcut"
+        android:shortcutDisabledMessage="@string/login_shortcut_disabled">
+        <intent
+            android:action="org.chenyufei.android.buptgateway.ACTION_LOGIN"
+            android:targetPackage="org.chenyufei.android.buptgateway"
+            android:targetClass="org.chenyufei.android.buptgateway.ShortcutActivity" />
+        <!-- If your shortcut is associated with multiple intents, include them
+             here. The last intent in the list determines what the user sees when
+             they launch this shortcut. -->
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+    <!-- Specify more shortcuts here. -->
+    <shortcut
+        android:shortcutId="shortcut_logout"
+        android:enabled="true"
+        android:icon="@mipmap/log_out"
+        android:shortcutShortLabel="@string/logout_shortcut"
+        android:shortcutLongLabel="@string/logout_shortcut"
+        android:shortcutDisabledMessage="@string/logout_shortcut_disabled">
+        <intent
+            android:action="org.chenyufei.android.buptgateway.ACTION_LOGOUT"
+            android:targetPackage="org.chenyufei.android.buptgateway"
+            android:targetClass="org.chenyufei.android.buptgateway.ShortcutActivity" />
+        <!-- If your shortcut is associated with multiple intents, include them
+             here. The last intent in the list determines what the user sees when
+             they launch this shortcut. -->
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+</shortcuts>
