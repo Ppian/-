@@ -1,17 +1,21 @@
 package org.chenyufei.android.buptgateway;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private static final String TAG = LoginActivity.class.getSimpleName();
 
     private EditText mUserEditText;
     private EditText mPasswordEditText;
@@ -26,14 +30,18 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        startService(new Intent(getApplicationContext(), NetworkStateService.class));
+
+        Log.i(TAG, "onCreate: ");
+
         // Read user info from SharedPreferences
         mUserManager = new UserManager(this);
         mUserInfo = mUserManager.readUserInfoFromSharedPreferences();
 
-        mUserEditText = findViewById(R.id.user_edittext);
-        mPasswordEditText = findViewById(R.id.password_edittext);
-        mLoginButton = findViewById(R.id.login_button);
-        mLogoutButton = findViewById(R.id.logout_button);
+        mUserEditText = (EditText) findViewById(R.id.user_edittext);
+        mPasswordEditText = (EditText) findViewById(R.id.password_edittext);
+        mLoginButton = (Button) findViewById(R.id.login_button);
+        mLogoutButton = (Button) findViewById(R.id.logout_button);
 
         mUserEditText.setText(mUserInfo.getUsername());
         mPasswordEditText.setText(mUserInfo.getPassword());
@@ -60,7 +68,6 @@ public class LoginActivity extends AppCompatActivity {
                 mUserManager.saveUserInfoToSharedPreferences(mUserInfo);
 
                 new GatewayManager(username, password, gatewayCallback).login();
-
             }
         });
 

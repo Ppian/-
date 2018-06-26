@@ -17,7 +17,7 @@ import android.widget.Toast;
  * Created by yfchen on 2018/6/21.
  */
 
-public class WifStateBroadcastReceiver extends BroadcastReceiver {
+public class WifiStateBroadcastReceiver extends BroadcastReceiver {
 
     private Context mContext;
     private GatewayManager gatewayManager;
@@ -91,7 +91,7 @@ public class WifStateBroadcastReceiver extends BroadcastReceiver {
         String password = preferences.getString("password", "");
 
 
-        synchronized (WifStateBroadcastReceiver.class) {
+        synchronized (WifiStateBroadcastReceiver.class) {
             if (isRunning == false) {
                 isRunning = true;
             } else {
@@ -100,7 +100,7 @@ public class WifStateBroadcastReceiver extends BroadcastReceiver {
         }
 
         try {
-            Thread.sleep(1000);
+            Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
