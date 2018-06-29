@@ -34,26 +34,25 @@ public class NetworkStateService extends Service {
         IntentFilter mFilter = new IntentFilter();
         //mFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         mFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+        //mFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
         registerReceiver(mWifiStateBroadcastReceiver, mFilter);
 
-        Toast.makeText(this, "create service", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onCreate: ");
+        //Toast.makeText(this, "自邮门服务开启", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onCreate");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        super.onStartCommand(intent, flags, startId);
-
-        Log.d(TAG, "onStartCommand: ");
-        return START_STICKY;
+        Log.d(TAG, "onStartCommand");
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mWifiStateBroadcastReceiver);
-        Toast.makeText(this, "destroy service", Toast.LENGTH_SHORT).show();
-        Log.d(TAG, "onDestroy: ");
+        //Toast.makeText(this, "自邮门服务关闭", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "onDestroy");
     }
 
     public class MyBinder extends Binder {

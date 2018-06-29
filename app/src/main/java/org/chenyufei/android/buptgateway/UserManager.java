@@ -16,7 +16,7 @@ public class UserManager {
     }
 
     public UserInfo readUserInfoFromSharedPreferences() {
-        SharedPreferences preferences = mContext.getSharedPreferences("user", Context.MODE_PRIVATE);
+        SharedPreferences preferences = mContext.getSharedPreferences("user", Context.MODE_MULTI_PROCESS);
         String username = preferences.getString("username", null);
         String password = preferences.getString("password", null);
         UserInfo userInfo = new UserInfo();
@@ -26,7 +26,7 @@ public class UserManager {
     }
 
     public void saveUserInfoToSharedPreferences(UserInfo userInfo) {
-        SharedPreferences preferences = mContext.getSharedPreferences("user", Context.MODE_PRIVATE);
+        SharedPreferences preferences = mContext.getSharedPreferences("user", Context.MODE_MULTI_PROCESS);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("username", userInfo.getUsername());
         editor.putString("password", userInfo.getPassword());

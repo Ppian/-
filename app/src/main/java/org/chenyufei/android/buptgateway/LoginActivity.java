@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         if (wifiManager.isWifiEnabled()) {
             new GatewayManager(mUserInfo.getUsername(), mUserInfo.getPassword(), gatewayCallback).checkLogin();
         } else {
-            Toast.makeText(this, "未连接wifi,请先打开wifi", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "未连接WIFI", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -148,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             String data = msg.getData().getString("data");
-            Toast.makeText(LoginActivity.this, data, Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "自邮门：" + data, Toast.LENGTH_SHORT).show();
         }
     };
 }

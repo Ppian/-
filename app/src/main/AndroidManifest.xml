@@ -27,9 +27,12 @@
         </activity>
 
         <receiver android:name=".BootBroadCastReceiver"
-            android:process=":networkStateService">
+            android:process=":networkStateService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.REBOOT"/>
             </intent-filter>
         </receiver>
 

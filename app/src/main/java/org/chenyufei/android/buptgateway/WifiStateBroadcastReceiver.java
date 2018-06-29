@@ -8,6 +8,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Toast;
 
 
@@ -18,10 +19,43 @@ import android.widget.Toast;
  */
 
 public class WifiStateBroadcastReceiver extends BroadcastReceiver {
+    
+    private static final String TAG = WifiStateBroadcastReceiver.class.getSimpleName();
 
     private Context mContext;
     private GatewayManager gatewayManager;
     private volatile static boolean isRunning;
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+
+        mContext = context;
+
+        Log.d(TAG, "onReceive: " + intent.getAction());
+
+        synchronized (WifiStateBroadcastReceiver.class) {
+            if (isRunning == false) {
+                isRunning = true;
+            } else {
+                return;
+            }
+        }
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // check wifi state
+        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        if (wifiManager.isWifiEnabled()) {
+            gatewayManager = new GatewayManager("", "", mCallback);
+            gatewayManager.checkCampusNetwork();
+        } else {
+            isRunning = false;
+        }
+    }
 
     private GatewayManager.Callback mCallback = new GatewayManager.Callback() {
         @Override
@@ -51,15 +85,14 @@ public class WifiStateBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onCheckCampusNetwork(boolean isCampusNetwork) {
             if (isCampusNetwork) {
-                Message message = new Message();
-                Bundle messageBundle = new Bundle();
-                String data = "连接到校园网";
-                messageBundle.putString("data", data);
-                message.setData(messageBundle);
-                mHandler.sendMessage(message);
+//                Message message = new Message();
+//                Bundle messageBundle = new Bundle();
+//                String data = "连接到校园网";
+//                messageBundle.putString("data", data);
+//                message.setData(messageBundle);
+//                mHandler.sendMessage(message);
                 gatewayManager.checkLogin();
             } else {
-                System.out.println("非校园网");
                 isRunning = false;
             }
         }
@@ -67,7 +100,23 @@ public class WifiStateBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onCheckLogin(boolean haveLogin) {
             if (!haveLogin) {
-                gatewayManager.login();
+                SharedPreferences preferences = mContext.getSharedPreferences("user", Context.MODE_MULTI_PROCESS);
+                String username = preferences.getString("username", "");
+                String password = preferences.getString("password", "");
+                Log.d(TAG, "onReceive: username = " + username + " password = " + password);
+                if (username.equals("")) {
+                    Message message = new Message();
+                    Bundle messageBundle = new Bundle();
+                    String data = "自动登录失败，请先保存账号和密码";
+                    messageBundle.putString("data", data);
+                    message.setData(messageBundle);
+                    mHandler.sendMessage(message);
+                    isRunning = false;
+                } else {
+                    gatewayManager.setUsername(username);
+                    gatewayManager.setPassword(password);
+                    gatewayManager.login();
+                }
             } else {
                 Message message = new Message();
                 Bundle messageBundle = new Bundle();
@@ -81,48 +130,12 @@ public class WifiStateBroadcastReceiver extends BroadcastReceiver {
         }
     };
 
-    @Override
-    public void onReceive(final Context context, Intent intent) {
-
-        mContext = context;
-
-        SharedPreferences preferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
-        String username = preferences.getString("username", "");
-        String password = preferences.getString("password", "");
-
-
-        synchronized (WifiStateBroadcastReceiver.class) {
-            if (isRunning == false) {
-                isRunning = true;
-            } else {
-                return;
-            }
-        }
-
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        gatewayManager = new GatewayManager(username, password, mCallback);
-
-        // check wifi state
-        WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-
-        if (wifiManager.isWifiEnabled()) {
-            gatewayManager.checkCampusNetwork();
-        } else {
-            isRunning = false;
-        }
-    }
-
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             String data = msg.getData().getString("data");
-            Toast.makeText(mContext, data, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "自邮门：" + data, Toast.LENGTH_SHORT).show();
         }
     };
 }
